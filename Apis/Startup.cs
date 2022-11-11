@@ -51,6 +51,13 @@ namespace Apis
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapAreaControllerRoute(
+                    "Api_Pokemon", 
+                    "Api_Pokemon",
+                    "{controller=Pokemon}/{action=Index}/{id?}"
+                    );
+
             });
         }
     }

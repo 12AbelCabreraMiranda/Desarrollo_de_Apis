@@ -1,66 +1,6 @@
-﻿@model List<Apis.Pokemon>
+﻿
 
 @{
     ViewData["Title"] = "Home Page";
 }
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-<div class="container">
-    <div class="row mb-4">
-        <div class="col-md-12 text-center">
-            <img height="200" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/800px-International_Pok%C3%A9mon_logo.svg.png" />
-        </div>
-        @foreach (var item in Model)
-        {
-            <div class="col-md-3 mt-4">
-                <div class="card shadow-sm">
-                    <div class="card-body tamanio-card pointer d-flex align-items-center justify-content-center" style="background-color:@item.ColorCards">
-                        <img src="@item.Imagen" class="card-img-top img-fluid tamaio-img" alt="...">
-
-                    </div>
-                    <div class="card-footer bg-white">
-                        @*<h5 class="card-title mb-0">@item.Id</h5>*@
-                        <h5 class="card-title mb-0 d-inline-block mt-1" style="text-transform: capitalize;">@item.Nombre</h5>
-                        <h3 class="d-inline-block float-right pointer @item.Id" onmouseover="mouseOver(@item.Id,'@item.ColorCards')" onmouseout="mouseOut(@item.Id)">
-                            <i class="bi bi-heart"></i>
-                        </h3>
-                    </div>
-                </div>
-            </div>
-        }
-
-    </div>
-</div>
-
-<style>
-    .tamanio-card {
-        height: 250px;
-    }
-
-    .tamaio-img {
-        max-height: 200px;
-    }
-    .tamaio-img:hover {
-        -ms-transform: scale(1.4); /* IE 9 */
-        -webkit-transform: scale(1.4); /* Safari 3-8 */
-        transform: scale(1.4);
-    }
-    .pointer {
-        cursor: pointer;
-    }
-
-    .bi-heart:hover {
-    }
-</style>
-
-@section Scripts {
-
-    <script>
-        function mouseOver(id, color) {
-            $("." + id).css("color", color);
-        }
-
-        function mouseOut(id) {
-            $("." + id).css("color", "#1f1f1f");
-        }
-    </script>
-}
+<h3>Menú de apis</h3>
