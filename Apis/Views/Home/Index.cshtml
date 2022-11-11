@@ -4,3 +4,39 @@
     ViewData["Title"] = "Home Page";
 }
 <h3>Menú de apis</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 pointer">
+            <a class="nav-link text-dark" asp-area="Api_Pokemon" asp-controller="Pokemon" asp-action="Index">
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Pokemon</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3 pointer">
+            <a class="nav-link text-dark" asp-area="#" asp-controller="#" asp-action="#">
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Rick and Morty</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+     
+
+    </div>
+</div>
+
+
+<style>
+
+    .pointer {
+        cursor: pointer;
+    }
+
+</style>

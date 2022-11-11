@@ -469,6 +469,7 @@ namespace Apis
         public string Nombre { get; set; }
         public Uri Imagen { get; set; }
         public string ColorCards { get; set; }
+        public string ColorCardsDegradado { get; set; }
     }
 
     public class BackgroundPokemon

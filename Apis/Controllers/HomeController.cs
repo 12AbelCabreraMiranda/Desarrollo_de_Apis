@@ -12,13 +12,10 @@ namespace Apis.Controllers
     public class HomeController : Controller
     {
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
 
-            ApiData api = new ApiData();
-            List<Pokemon> data = await api.miApi();
-
-            return View(data);
+            return View();
         }
 
         public IActionResult Privacy()
