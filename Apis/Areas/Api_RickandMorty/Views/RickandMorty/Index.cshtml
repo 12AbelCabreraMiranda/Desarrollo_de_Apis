@@ -1,0 +1,24 @@
+﻿@model Apis.Areas.Api_RickandMorty.Data.Principal
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <img height="350" src="https://occ.a.nflxso.net/dnm/api/v6/E8vDc_W8CLv7-yMQu8KMEC7Rrr8/AAAABQiueWggGi5jRi90-HxWCCR50UQv0Ah8_FlRzbT3hib02J5mvN9-g8YsT8jN9dFdgspCFLSHgc27S-fqRNxBglbwfHexRSKVQWIN.jpg?r=9b9" />
+        </div>
+        @foreach (var item in Model.Results)
+        {
+            <div class="col-md-3 mt-3">
+                <div class="card shadow-sm">
+                    <img src="@item.Image" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

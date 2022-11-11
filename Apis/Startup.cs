@@ -58,6 +58,12 @@ namespace Apis
                     "{controller=Pokemon}/{action=Index}/{id?}"
                     );
 
+                endpoints.MapAreaControllerRoute(
+                    "Api_RickandMorty",
+                    "Api_RickandMorty",
+                    "{controller=RickandMorty}/{action=Index}/{id?}"
+                    );
+
             });
         }
     }

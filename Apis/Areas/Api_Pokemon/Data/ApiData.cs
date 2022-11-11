@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Apis
+namespace Apis.Areas.Api_Pokemon.Data
 {
     public class ApiData
     {
