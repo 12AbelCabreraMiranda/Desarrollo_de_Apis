@@ -18,7 +18,7 @@ namespace Apis.Areas.Api_Pokemon.Data
 
             var lstTask = new List<Task>
             {
-                Task.Run(async () =>{ return lstPokemons = await ProcesarApi(hasta-19, hasta); }),                
+                Task.Run(async () =>{ return lstPokemons = await ObtenerRangoDePokemon(hasta-19, hasta); }),                
             };
 
             Task oTask = Task.WhenAll(lstTask);
@@ -36,7 +36,7 @@ namespace Apis.Areas.Api_Pokemon.Data
             return lstPokemons;
         }
 
-        public async Task<List<Pokemon>> ProcesarApi(int desde, int hasta)
+        public async Task<List<Pokemon>> ObtenerRangoDePokemon(int desde, int hasta)
         {
             List<Pokemon> lstPokemons = new List<Pokemon>();
 
@@ -64,6 +64,69 @@ namespace Apis.Areas.Api_Pokemon.Data
 
             return lstPokemons;
         }
+
+        public async Task<Pokemon> ObtenerUnPokemon(int id)
+        {
+            Pokemon miPokemon = new Pokemon();
+
+            var url = "https://pokeapi.co/api/v2/pokemon/" + (id);
+            var httpClient = new HttpClient();
+
+            var response = await httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var objApi = JsonConvert.DeserializeObject<Principal>(content);
+
+
+                List<Habilidades> lstHabilidades = await ObtenerHabilidades(objApi.Abilities);
+
+                miPokemon = new Pokemon
+                {
+                    Id = objApi.Id,
+                    Nombre = objApi.Name,
+                    Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
+                    ColorCards = PintarBackground(objApi.Types[0].Type.Name),
+                    Habilidades= lstHabilidades
+
+                };
+             
+            }
+            
+            return miPokemon;
+        }
+
+        public async Task<List<Habilidades>> ObtenerHabilidades(List<Ability> abilities)
+        {
+
+            List<Habilidades> lista = new List<Habilidades>();
+          
+            var httpClient = new HttpClient();
+
+            foreach(var item in abilities)
+            {
+                var response = await httpClient.GetAsync(item.AbilityAbility.Url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var objApi = JsonConvert.DeserializeObject<Habilidades>(content);
+
+                    var _habilidad = objApi.EffectEntries.Where(x => x.Language.Name.Equals("en")).ToList();
+                    Habilidades obj = new Habilidades()
+                    {
+                        EffectEntries = _habilidad
+                    };
+                    lista.Add(obj);
+
+                }
+            }
+            
+         
+
+            return lista;
+        }
+
+
         public string PintarBackground(string _nombreColor)
         {
             List<BackgroundPokemon> myColor = new List<BackgroundPokemon>();
@@ -515,12 +578,46 @@ namespace Apis.Areas.Api_Pokemon.Data
         public Uri Imagen { get; set; }
         public string ColorCards { get; set; }
         public string ColorCardsDegradado { get; set; }
+        public List<Habilidades> Habilidades { get; set; }
+        public DetallePokemon DetallePokemon { get; set; }
     }
-
+    public class DetallePokemon
+    {
+        public int Id { get; set; }
+        public int HP { get; set; }
+        public int Experiencia { get; set; }
+        public int Ataque { get; set; }
+        public int Defensa { get; set; }
+        public int Especial { get; set; }
+    }
     public class BackgroundPokemon
     {
         public string NombreColor { get; set; }
         public string Color { get; set; }
+    }
+
+
+    //end point habilidades
+    public class Habilidades
+    {        
+        [JsonProperty("effect_entries")]
+        public List<EffectEntry> EffectEntries { get; set; }
+               
+    }
+    public class EffectEntry
+    {
+        [JsonProperty("effect")]
+        public string Effect { get; set; }
+
+        [JsonProperty("language")]
+        public Generation Language { get; set; }
+
+    }
+    public class Generation
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        
     }
 
 }
