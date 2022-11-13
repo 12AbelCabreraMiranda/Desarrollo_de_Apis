@@ -1,48 +1,69 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Apis.Areas.Api_Pokemon.Data
 {
     public class ApiData
     {
-        public async Task<List<Pokemon>> miApi()
+        public async Task<List<Pokemon>> MiApi(int hasta)
         {
-            List<Pokemon> lstPokemons = new List<Pokemon>();
-            for(int i=1; i <= 15; i++)
+            List<Pokemon> lstPokemons = new List<Pokemon>();            
+
+            var lstTask = new List<Task>
             {
-                var url = "https://pokeapi.co/api/v2/pokemon/"+i;
-                //JsonSerializerOptions options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+                Task.Run(async () =>{ return lstPokemons = await ProcesarApi(hasta-19, hasta); }),                
+            };
 
-                using (var httpClient = new HttpClient())
-                {
-                    var response = await httpClient.GetAsync(url);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        Pokemon obj = new Pokemon();
-                        var content = await response.Content.ReadAsStringAsync();
+            Task oTask = Task.WhenAll(lstTask);
 
-                        var objApi = JsonConvert.DeserializeObject<Principal>(content);
-                        obj.Id = objApi.Id;
-                        obj.Nombre = objApi.Name;
-                        obj.Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault;
-                        obj.ColorCards = PintarBackground(objApi.Types[0].Type.Name);
-                        lstPokemons.Add(obj);
-                    }
-
-                }
+            try
+            {
+                oTask.Wait();
             }
-            
+            catch (Exception)
+            {
 
+                throw;
+            }
+           
             return lstPokemons;
-            
         }
 
+        public async Task<List<Pokemon>> ProcesarApi(int desde, int hasta)
+        {
+            List<Pokemon> lstPokemons = new List<Pokemon>();
 
+            for (int i = desde; i <= hasta; i++)
+            {
+                var url = "https://pokeapi.co/api/v2/pokemon/" + (i);
+                var httpClient = new HttpClient();
+
+                var response =await httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var objApi = JsonConvert.DeserializeObject<Principal>(content);
+
+                    Pokemon obj = new Pokemon
+                    {
+                        Id = objApi.Id,
+                        Nombre = objApi.Name,
+                        Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
+                        ColorCards = PintarBackground(objApi.Types[0].Type.Name)
+                    };
+                    lstPokemons.Add(obj);
+                }
+            }
+
+            return lstPokemons;
+        }
         public string PintarBackground(string _nombreColor)
         {
             List<BackgroundPokemon> myColor = new List<BackgroundPokemon>();
@@ -67,6 +88,30 @@ namespace Apis.Areas.Api_Pokemon.Data
 
             return findColor;
         }
+    }
+
+    public class Info
+    {
+        [JsonProperty("count")]
+        public int Count { get; set; }
+
+        [JsonProperty("next")]
+        public Uri Next { get; set; }
+
+        [JsonProperty("previous")]
+        public object Previous { get; set; }
+
+        [JsonProperty("results")]
+        public List<Result> Results { get; set; }
+    }
+
+    public class Result
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("url")]
+        public Uri Url { get; set; }
     }
 
     public class Principal

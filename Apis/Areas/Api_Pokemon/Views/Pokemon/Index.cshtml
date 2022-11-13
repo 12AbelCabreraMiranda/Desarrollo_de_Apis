@@ -1,4 +1,4 @@
-﻿@model List<Apis.Areas.Api_Pokemon.Data.Pokemon>
+﻿@model Apis.Areas.Api_Pokemon.ViewModels.PokemonViewModels
 
 @{
     ViewData["Title"] = "Home Page";
@@ -9,7 +9,7 @@
         <div class="col-md-12 text-center">
             <img height="200" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/800px-International_Pok%C3%A9mon_logo.svg.png" />
         </div>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Pokemon)
         {
             <div class="col-md-3 mt-4">
                 <div class="card shadow-sm">
@@ -31,7 +31,27 @@
     </div>
 </div>
 
+<!--Paginador-->
+<div class="container">
+
+@{Html.RenderPartial("_paginador", Model);}
+</div>
+
 <style>
+
+    a.nav1 {
+        text-decoration: none;
+        color: #141313;
+    }
+
+    a.nav2 {
+        text-decoration: none;
+    }
+
+    .disabled span .nav1 {
+        color: #949393;
+    }
+
     .tamanio-card {
         height: 250px;
     }
@@ -41,8 +61,8 @@
     }
 
         .tamaio-img:hover {
-            -ms-transform: scale(1.4); /* IE 9 */
-            -webkit-transform: scale(1.4); /* Safari 3-8 */
+            -ms-transform: scale(1.4);
+            -webkit-transform: scale(1.4);
             transform: scale(1.4);
         }
 

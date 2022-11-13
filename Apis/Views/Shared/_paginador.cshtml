@@ -1,0 +1,102 @@
+﻿@model Apis.Areas.Api_Pokemon.Models.BasePaginador
+
+
+@{ var cantidadPaginas = (int)Math.Ceiling((double)Model.TotalDeRegistros / Model.RegistrosPorPagina); }
+
+<!--Funcionalidad: Anterior y siguiente-->
+<div class="d-inline-block">
+
+
+    <nav aria-label="Page navigation example">
+
+        <ul class="pagination">
+            @if (Model.PaginaActual == 1)
+            {
+                //Model.ValoresQueryString["pagina"] = 1;
+                <li class="disabled page-item">
+                    <span class="page-link">@Html.ActionLink("Anterior", null, new { pagina = 1 }, new { @class = "nav1" })</span>
+                </li>
+            }
+            else
+            {
+                //Model.ValoresQueryString["pagina"] = Model.PaginaActual - 1;
+                <li class="page-item">
+                    <span class="page-link">@Html.ActionLink("Anterior", null, new { pagina = Model.PaginaActual - 1 }, new {@class= "nav1" })</span>
+                </li>
+            }
+
+            @if (Model.PaginaActual == cantidadPaginas)
+            {
+                //Model.ValoresQueryString["pagina"] = cantidadPaginas;
+                <li class="disabled page-item">
+                    <span class="page-link">@Html.ActionLink("Siguiente", null, new { pagina = cantidadPaginas }, new { @class = "nav1" })</span>
+                </li>
+            }
+            else
+            {
+                //Model.ValoresQueryString["pagina"] = Model.PaginaActual + 1;
+                <li class="page-item">
+                    <span class="page-link">@Html.ActionLink("Siguiente", null, new { pagina = Model.PaginaActual + 1 }, new { @class = "nav1" })</span>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+<div class="nav2 d-inline-block">
+    <!--Funcionalidad: Páginas-->
+    @{
+        int Inicial = 1;
+        var radio = 3;
+        var cantidadMaximaDePaginas = radio * 2 + 1;
+        int Final = (cantidadPaginas > cantidadMaximaDePaginas) ? cantidadMaximaDePaginas : cantidadPaginas;
+        if (Model.PaginaActual > radio + 1)
+        {
+            Inicial = Model.PaginaActual - radio;
+            if (cantidadPaginas > Model.PaginaActual + radio)
+            {
+                Final = Model.PaginaActual + radio;
+            }
+            else
+            {
+                Final = cantidadPaginas;
+            }
+        }
+    }
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @*@{Model.ValoresQueryString["pagina"] = 1; }*@
+            <li class="page-item">
+                <span class="page-link">@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "nav2" })</span>
+            </li>
+
+            @for (int i = Inicial; i <= Final; i++)
+            {
+                //Model.ValoresQueryString["pagina"] = i;
+                if (i == Model.PaginaActual)
+                {
+                    <li class="page-item active">
+                        <span class="page-link">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "nav2 text-white" })</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <span class="page-link">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "nav2" })</span>
+                    </li>
+                }
+            }
+
+            @*@{Model.ValoresQueryString["pagina"] = cantidadPaginas; }*@
+            <li class="page-item">
+                <span class="page-link">@Html.ActionLink("Ultima", null, new { pagina = cantidadPaginas }, new { @class = "nav2" })</span>
+            </li>
+
+        </ul>
+    </nav>
+
+
+</div>
+
+
