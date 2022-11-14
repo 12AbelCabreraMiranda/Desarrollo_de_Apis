@@ -45,6 +45,14 @@
                 </dd>
                
             </dl>
+                @foreach(var item in Model.InfoAbility)
+                {
+                    foreach(var subitem in item.EffectEntries)
+                    {
+
+                       <p>@subitem.Effect</p>
+                    }
+                }
         </div>
     </div>
     

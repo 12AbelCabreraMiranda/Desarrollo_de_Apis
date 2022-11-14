@@ -79,16 +79,15 @@ namespace Apis.Areas.Api_Pokemon.Data
                 var objApi = JsonConvert.DeserializeObject<Principal>(content);
 
 
-                List<Habilidades> lstHabilidades = await ObtenerHabilidades(objApi.Abilities);
-
+                List<InfoAbility> lstAbility = await ObtenerHabilidades(objApi.Ability);
+              
                 miPokemon = new Pokemon
                 {
                     Id = objApi.Id,
                     Nombre = objApi.Name,
                     Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
                     ColorCards = PintarBackground(objApi.Types[0].Type.Name),
-                    Habilidades= lstHabilidades
-
+                    InfoAbility = lstAbility                    
                 };
              
             }
@@ -96,10 +95,10 @@ namespace Apis.Areas.Api_Pokemon.Data
             return miPokemon;
         }
 
-        public async Task<List<Habilidades>> ObtenerHabilidades(List<Ability> abilities)
+        public async Task<List<InfoAbility>> ObtenerHabilidades(List<Ability> abilities)
         {
 
-            List<Habilidades> lista = new List<Habilidades>();
+            List<InfoAbility> lista = new List<InfoAbility>();
           
             var httpClient = new HttpClient();
 
@@ -109,10 +108,10 @@ namespace Apis.Areas.Api_Pokemon.Data
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var objApi = JsonConvert.DeserializeObject<Habilidades>(content);
+                    var objApi = JsonConvert.DeserializeObject<InfoAbility>(content);
 
                     var _habilidad = objApi.EffectEntries.Where(x => x.Language.Name.Equals("en")).ToList();
-                    Habilidades obj = new Habilidades()
+                    InfoAbility obj = new InfoAbility()
                     {
                         EffectEntries = _habilidad
                     };
@@ -121,8 +120,6 @@ namespace Apis.Areas.Api_Pokemon.Data
                 }
             }
             
-         
-
             return lista;
         }
 
@@ -180,7 +177,7 @@ namespace Apis.Areas.Api_Pokemon.Data
     public class Principal
     {
         [JsonProperty("abilities")]
-        public List<Ability> Abilities { get; set; }
+        public List<Ability> Ability { get; set; }
 
         [JsonProperty("base_experience")]
         public long BaseExperience { get; set; }
@@ -578,7 +575,7 @@ namespace Apis.Areas.Api_Pokemon.Data
         public Uri Imagen { get; set; }
         public string ColorCards { get; set; }
         public string ColorCardsDegradado { get; set; }
-        public List<Habilidades> Habilidades { get; set; }
+        public List<InfoAbility> InfoAbility { get; set; }
         public DetallePokemon DetallePokemon { get; set; }
     }
     public class DetallePokemon
@@ -590,6 +587,10 @@ namespace Apis.Areas.Api_Pokemon.Data
         public int Defensa { get; set; }
         public int Especial { get; set; }
     }
+    public class HabilidadesPokemon
+    {
+        public string NombreHabilidad { get; set; }
+    }
     public class BackgroundPokemon
     {
         public string NombreColor { get; set; }
@@ -598,7 +599,7 @@ namespace Apis.Areas.Api_Pokemon.Data
 
 
     //end point habilidades
-    public class Habilidades
+    public class InfoAbility
     {        
         [JsonProperty("effect_entries")]
         public List<EffectEntry> EffectEntries { get; set; }
@@ -610,10 +611,10 @@ namespace Apis.Areas.Api_Pokemon.Data
         public string Effect { get; set; }
 
         [JsonProperty("language")]
-        public Generation Language { get; set; }
+        public Languague Language { get; set; }
 
     }
-    public class Generation
+    public class Languague
     {
         [JsonProperty("name")]
         public string Name { get; set; }
