@@ -11,20 +11,29 @@
             <h1 class="text-center">Detalle Pokemón</h1>
         </div>
         
+        @*Columna Imagen*@
         <div class="col-md-4 text-center mx-auto">
-            <img src="@Model.Imagen" class="img-fluid" alt="...">
-            <dl class="row mb-0">
-                <dd class="col-sm-4 mb-0">@Model.EstadisticaPokemon.Ataque</dd>
-                <dd class="col-sm-4 mb-0">@Model.EstadisticaPokemon.Defensa</dd>
-                <dd class="col-sm-4 mb-0">@Model.EstadisticaPokemon.AtaqueEspecial</dd>
-            </dl>
-            <dl class="row">
-                <dd class="col-sm-4 mb-0"><i class="bi bi-star"></i> Ataque</dd>
-                <dd class="col-sm-4 mb-0"><i class="bi bi-shield-fill-check"></i> Defensa</dd>
-                <dd class="col-sm-4 mb-0"><i class="bi bi-stars"></i> Especial</dd>
-            </dl>           
+            <div class="card p-1" >
+                <div class="card-body d-flex align-items-center justify-content-center" style="height:400px">
+                    <img src="@Model.Imagen" class="img-fluid" alt="..." style="height:100%">
+                </div>
+                <div class="card-footer px-0">
+                    <dl class="row mb-0">
+                        <dd class="col-sm-4 mb-0"><b>@Model.EstadisticaPokemon.Ataque</b></dd>
+                        <dd class="col-sm-4 mb-0"><b>@Model.EstadisticaPokemon.Defensa</b></dd>
+                        <dd class="col-sm-4 mb-0"><b>@Model.EstadisticaPokemon.AtaqueEspecial</b></dd>
+                    </dl>
+                    <dl class="row">
+                        <dd class="col-sm-4 mb-0"><i class="bi bi-star"></i> <small>Ataque</small></dd>
+                        <dd class="col-sm-4 mb-0"><i class="bi bi-shield-fill-check"></i> <small>Defensa</small></dd>
+                        <dd class="col-sm-4 mb-0"><i class="bi bi-stars"></i><small>Especial</small></dd>
+                    </dl>
+                </div>
+            </div>
+                       
         </div>
-
+        
+        @*Columna detalle pokemon*@
         <div class="col-md-6">
             <dl class="row">
                 <dt class="col-sm-3 d-none">
