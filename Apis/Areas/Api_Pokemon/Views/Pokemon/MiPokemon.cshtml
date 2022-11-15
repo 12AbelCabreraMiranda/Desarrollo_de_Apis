@@ -8,13 +8,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h1 class="text-center">Detalle Pokemón</h1>
+            <h1 class="text-center mb-4">Detalle Pokemón</h1>
         </div>
-        
+
         @*Columna Imagen*@
         <div class="col-md-4 text-center mx-auto">
-            <div class="card p-1" >
-                <div class="card-body d-flex align-items-center justify-content-center" style="height:400px">
+            <div class="card p-1">
+                <div class="card-body d-flex align-items-center justify-content-center card-detalle" style="height:400px">
                     <img src="@Model.Imagen" class="img-fluid" alt="..." style="height:100%">
                 </div>
                 <div class="card-footer px-0">
@@ -30,65 +30,71 @@
                     </dl>
                 </div>
             </div>
-                       
+
         </div>
-        
+
         @*Columna detalle pokemon*@
-        <div class="col-md-6">
-            <dl class="row">
-                <dt class="col-sm-3 d-none">
-                    @Html.DisplayNameFor(model => model.Id)
-                </dt>
-                <dd class="col-sm-9 d-none">
-                    @Html.DisplayFor(model => model.Id)
-                </dd>
-                <dt class="col-sm-3">
-                    Nombre:
-                </dt>
-                <dd class="col-sm-9">
-                    <label style="text-transform: capitalize;">@Model.Nombre</label>
-                </dd>
-                <dt class="col-sm-3">
-                    Experiencia:
-                </dt>
-                <dd class="col-sm-9">
-                    <i class="bi bi-activity"></i> @Model.EstadisticaPokemon.Experiencia
-                </dd>
-                <dt class="col-sm-3">
-                    HP:
-                </dt>
-                <dd class="col-sm-9">
-                    <i class="bi bi-heart"></i> @Model.EstadisticaPokemon.HP
-                </dd>
+    <div class="col-md-6">
+        <dl class="row">
+            <dt class="col-sm-3 d-none">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-9 d-none">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-3">
+                Nombre:
+            </dt>
+            <dd class="col-sm-9">
+                <label style="text-transform: capitalize;">@Model.Nombre</label>
+            </dd>
+            <dt class="col-sm-3">
+                Experiencia:
+            </dt>
+            <dd class="col-sm-9">
+                <i class="bi bi-activity"></i> @Model.EstadisticaPokemon.Experiencia
+            </dd>
+            <dt class="col-sm-3">
+                HP:
+            </dt>
+            <dd class="col-sm-9">
+                <i class="bi bi-heart"></i> @Model.EstadisticaPokemon.HP
+            </dd>
 
-                <dt class="col-sm-12">Descripción de Habilidades: </dt>
-                <dd class="col-sm-12">
-                    @foreach (var item in Model.HabilidadesPokemon)
-                    {
-                        <p><i class="bi bi-check2-circle"></i> @item.NombreHabilidad</p>
-                    }
-                </dd>                                
-            </dl>
-            <dl class="row">
-                <dt class="col-sm-12">Elegir color: </dt>
-                <dd class="col-sm-4 mb-0">
-                    <h2 class="d-inline-block pointer"><i class="bi bi-circle"></i></h2>
-                    <h6 class="d-inline-block">Default</h6> 
-                </dd>
-                <dd class="col-sm-4 mb-0">
-                    <h2 class="d-inline-block pointer"><i class="bi bi-palette"></i></h2>
-                    <h6 class="d-inline-block">Degradado</h6>                    
-                </dd>
+            <dt class="col-sm-12">Descripción de Habilidades: </dt>
+            <dd class="col-sm-12">
+                @foreach (var item in Model.HabilidadesPokemon)
+                {
+                    <p><i class="bi bi-check2-circle"></i> @item.NombreHabilidad</p>
+                }
+            </dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-12">Elegir color: </dt>
+            <dd class="col-sm-4 mb-0">
+                <h2 class="d-inline-block pointer" onclick="ColorDefault('@Model.ColorCards')"><i class="bi bi-circle-fill" style="color:@Model.ColorCards;"></i></h2>
+                <h6 class="d-inline-block">Default</h6>
+            </dd>
+            <dd class="col-sm-4 mb-0">
+                <h2 class="d-inline-block pointer" onclick="ColorDegradado()"><i class="bi bi-palette"></i></h2>
+                <h6 class="d-inline-block">Degradado</h6>
+            </dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-12">Mi favorito: </dt>
+            <dd class="col-sm-4 mb-0">
+                <h2 class="d-inline-block pointer"><i class="bi bi-heart-fill" style="color:@Model.ColorCards;"></i></h2>
+                <h6 class="d-inline-block">Eliminar <i class="bi bi-trash3-fill text-danger pointer" onclick="EliminaFavorito()"></i></h6>
+            </dd>            
+        </dl>
+    </div>
 
-            </dl>
-        </div>
-    
-        <div class="col-12 text-center mt-5">            
+        <div class="col-12 text-center mt-5">
             <a asp-action="Index" class="btn btn-outline-success rounded-pill px-4">Regresar</a>
         </div>
     </div>
-    
-    
+
+
 </div>
 
 <style>
@@ -96,3 +102,18 @@
         cursor: pointer;
     }
 </style>
+
+@section Scripts {
+    <script>
+        function ColorDefault(colorDefault) {
+            $('.card-detalle').css("background", colorDefault);
+        }
+
+        function ColorDegradado() {
+            $('.card-detalle').css("background", "green");
+        }
+        function EliminaFavorito() {
+            alert("Está seguro de eliminar?");
+        }
+    </script>
+}
