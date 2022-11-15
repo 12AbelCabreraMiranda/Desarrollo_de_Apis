@@ -400,5 +400,5 @@ D:\Visual Studio 2019\Project\Apis\Apis\obj\Debug\netcoreapp3.1\Apis.pdb
 D:\Visual Studio 2019\Project\Apis\Apis\obj\Debug\netcoreapp3.1\Apis.genruntimeconfig.cache
 D:\Visual Studio 2019\Project\Apis\Apis\obj\Debug\netcoreapp3.1\Razor\Areas\Api_RickandMorty\Views\RickandMorty\Index.cshtml.g.cs
 D:\Visual Studio 2019\Project\Apis\Apis\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_paginador.cshtml.g.cs
-D:\Visual Studio 2019\Project\Apis\Apis\obj\Debug\netcoreapp3.1\Razor\Areas\Api_Pokemon\Views\Pokemon\ObtenerPokemon.cshtml.g.cs
 D:\Visual Studio 2019\Project\Apis\Apis\obj\Debug\netcoreapp3.1\Razor\Areas\Api_Pokemon\Views\_ViewImports.cshtml.g.cs
+D:\Visual Studio 2019\Project\Apis\Apis\obj\Debug\netcoreapp3.1\Razor\Areas\Api_Pokemon\Views\Pokemon\MiPokemon.cshtml.g.cs

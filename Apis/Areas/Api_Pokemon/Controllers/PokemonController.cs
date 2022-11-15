@@ -36,7 +36,7 @@ namespace Apis.Areas.Api_Pokemon.Controllers
             return View(lstModels);
         }
         
-        public async Task<IActionResult> ObtenerPokemon(int id)
+        public async Task<IActionResult> MiPokemon(int id)
         {
             ApiData api = new ApiData();
             var miPokemon = await api.ObtenerUnPokemon(id);

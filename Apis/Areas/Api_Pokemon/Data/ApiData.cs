@@ -79,7 +79,7 @@ namespace Apis.Areas.Api_Pokemon.Data
                 var objApi = JsonConvert.DeserializeObject<Principal>(content);
 
 
-                List<InfoAbility> lstAbility = await ObtenerHabilidades(objApi.Ability);
+                List<HabilidadesPokemon> lstHabilidades = await ObtenerHabilidades(objApi.Ability);
               
                 miPokemon = new Pokemon
                 {
@@ -87,7 +87,17 @@ namespace Apis.Areas.Api_Pokemon.Data
                     Nombre = objApi.Name,
                     Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
                     ColorCards = PintarBackground(objApi.Types[0].Type.Name),
-                    InfoAbility = lstAbility                    
+                    HabilidadesPokemon = lstHabilidades,
+                    EstadisticaPokemon = new EstadisticaPokemon
+                    {
+                        Experiencia=objApi.BaseExperience,
+                        HP=objApi.Stats[0].BaseStat,
+                        Ataque=objApi.Stats[1].BaseStat,
+                        Defensa=objApi.Stats[2].BaseStat,
+                        AtaqueEspecial=objApi.Stats[3].BaseStat,
+                        DefensaEspecial=objApi.Stats[4].BaseStat,
+                        Velocidad=objApi.Stats[5].BaseStat
+                    }
                 };
              
             }
@@ -95,10 +105,10 @@ namespace Apis.Areas.Api_Pokemon.Data
             return miPokemon;
         }
 
-        public async Task<List<InfoAbility>> ObtenerHabilidades(List<Ability> abilities)
+        public async Task<List<HabilidadesPokemon>> ObtenerHabilidades(List<Ability> abilities)
         {
 
-            List<InfoAbility> lista = new List<InfoAbility>();
+            List<HabilidadesPokemon> lista = new List<HabilidadesPokemon>();
           
             var httpClient = new HttpClient();
 
@@ -110,10 +120,18 @@ namespace Apis.Areas.Api_Pokemon.Data
                     var content = await response.Content.ReadAsStringAsync();
                     var objApi = JsonConvert.DeserializeObject<InfoAbility>(content);
 
-                    var _habilidad = objApi.EffectEntries.Where(x => x.Language.Name.Equals("en")).ToList();
-                    InfoAbility obj = new InfoAbility()
+                    //var _habilidad = objApi.EffectEntries.Where(x => x.Language.Name.Equals("en")).ToList();
+                    var _habilidad = (from d in objApi.EffectEntries
+                                      where d.Language.Name.Equals("en")
+                                      select new HabilidadesPokemon
+                                      {
+                                           NombreHabilidad=d.Effect 
+                                      }).FirstOrDefault();
+
+
+                    HabilidadesPokemon obj = new HabilidadesPokemon()
                     {
-                        EffectEntries = _habilidad
+                        NombreHabilidad = _habilidad.NombreHabilidad
                     };
                     lista.Add(obj);
 
@@ -575,17 +593,21 @@ namespace Apis.Areas.Api_Pokemon.Data
         public Uri Imagen { get; set; }
         public string ColorCards { get; set; }
         public string ColorCardsDegradado { get; set; }
-        public List<InfoAbility> InfoAbility { get; set; }
-        public DetallePokemon DetallePokemon { get; set; }
+        public List<HabilidadesPokemon> HabilidadesPokemon { get; set; }
+        public EstadisticaPokemon EstadisticaPokemon { get; set; }
     }
-    public class DetallePokemon
+    public class EstadisticaPokemon
     {
-        public int Id { get; set; }
-        public int HP { get; set; }
-        public int Experiencia { get; set; }
-        public int Ataque { get; set; }
-        public int Defensa { get; set; }
-        public int Especial { get; set; }
+       
+        public long Experiencia { get; set; }
+        public long HP { get; set; }
+        public long Ataque { get; set; }
+        public long Defensa { get; set; }      
+        public long AtaqueEspecial { get; set; }
+        public long DefensaEspecial { get; set; }
+        public long Velocidad { get; set; }
+
+
     }
     public class HabilidadesPokemon
     {
