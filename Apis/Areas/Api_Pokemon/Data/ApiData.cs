@@ -141,8 +141,34 @@ namespace Apis.Areas.Api_Pokemon.Data
             return lista;
         }
 
+        public Colores ObtenerColores(List<TypeElement> Types)
+        {
+            Colores color = new Colores();
+            string color1;
+            string color2;
 
-        public string ColorHexadecimal(string _nombreColor)
+            if (Types.Count == 1)
+            {
+                color1 = ColorRGB(Types[0].Type.Name);
+                color2 = ColorRGB("normal");
+                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(" + color1 + ") 0%, rgba(" + color2 + ") 100%)";
+            }
+            else if (Types.Count == 2)
+            {
+                color1 = ColorRGB(Types[0].Type.Name);
+                color2 = ColorRGB(Types[1].Type.Name);
+                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(" + color1 + ") 0%, rgba(" + color2 + ") 100%)";
+            }
+            else
+            {
+                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(130,130,130,1) 0%, rgba(255,255,255,1) 100%)";
+            }
+            color.ColorDefault = ColorHexadecimal(Types[0].Type.Name);
+
+            return color;
+        }
+        
+        public string ColorHexadecimal(string nombreColor)
         {
             List<BackgroundPokemon> myColor = new List<BackgroundPokemon>
             {
@@ -163,12 +189,13 @@ namespace Apis.Areas.Api_Pokemon.Data
             };
 
             var findColor = (from l in myColor
-                             where l.NombreColor==_nombreColor
+                             where l.NombreColor==nombreColor
                              select l.Color).FirstOrDefault();
 
             return findColor;
         }
-        public string ColorRGB(string _nombreColor)
+        
+        public string ColorRGB(string nombreColor)
         {
             List<BackgroundPokemon> myColor = new List<BackgroundPokemon>
             {
@@ -189,38 +216,13 @@ namespace Apis.Areas.Api_Pokemon.Data
             };
 
             var findColor = (from l in myColor
-                             where l.NombreColor == _nombreColor
+                             where l.NombreColor == nombreColor
                              select l.Color).FirstOrDefault();
 
             return findColor;
         }
-
-        public Colores ObtenerColores(List<TypeElement> Types)
-        {
-            Colores color = new Colores();
-            string color1;
-            string color2;
-
-            if (Types.Count == 1)
-            {
-                color1 = ColorRGB(Types[0].Type.Name);
-                color2 = ColorRGB("normal");
-                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(" + color1 + ") 0%, rgba(" + color2 + ") 100%)";             
-            }
-            else if(Types.Count == 2)
-            {
-                color1 = ColorRGB(Types[0].Type.Name);
-                color2 = ColorRGB(Types[1].Type.Name);
-                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(" + color1 + ") 0%, rgba(" + color2 + ") 100%)";
-            }
-            else
-            {
-                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(130,130,130,1) 0%, rgba(255,255,255,1) 100%)";
-            }
-            color.ColorDefault = ColorHexadecimal(Types[0].Type.Name); 
-
-            return color;
-        }
+       
+        
     }
 
     public class Info
