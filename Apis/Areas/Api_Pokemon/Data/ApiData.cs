@@ -56,7 +56,7 @@ namespace Apis.Areas.Api_Pokemon.Data
                         Id = objApi.Id,
                         Nombre = objApi.Name,
                         Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
-                        ColorCards = PintarBackground(objApi.Types[0].Type.Name)
+                        ColorCards = ColorHexadecimal(objApi.Types[0].Type.Name)
                     };
                     lstPokemons.Add(obj);
                 }
@@ -86,7 +86,7 @@ namespace Apis.Areas.Api_Pokemon.Data
                     Id = objApi.Id,
                     Nombre = objApi.Name,
                     Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
-                    ColorCards = PintarBackground(objApi.Types[0].Type.Name),
+                    Colores = ObtenerColores(objApi.Types),
                     HabilidadesPokemon = lstHabilidades,
                     EstadisticaPokemon = new EstadisticaPokemon
                     {
@@ -142,29 +142,84 @@ namespace Apis.Areas.Api_Pokemon.Data
         }
 
 
-        public string PintarBackground(string _nombreColor)
+        public string ColorHexadecimal(string _nombreColor)
         {
-            List<BackgroundPokemon> myColor = new List<BackgroundPokemon>();
-            myColor.Add(new BackgroundPokemon() { NombreColor = "fire", Color = "#FDDFDF" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "grass", Color = "#DEFDE0" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "electric", Color = "#FCF7DE" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "water", Color = "#DEF3FD" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "ground", Color = "#f4e7da" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "rock", Color = "#d5d5d4" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "fairy", Color = "#fceaff" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "poison", Color = "#98d7a5" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "bug", Color = "#f8d5a3" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "dragon", Color = "#97b3e6" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "psychic", Color = "#eaeda1" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "flying", Color = "#F5F5F5" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "fighting", Color = "#E6E0D4" });
-            myColor.Add(new BackgroundPokemon() { NombreColor = "normal", Color = "#F5F5F5" });
+            List<BackgroundPokemon> myColor = new List<BackgroundPokemon>
+            {
+                new BackgroundPokemon() { NombreColor = "fire", Color = "#FDDFDF" },
+                new BackgroundPokemon() { NombreColor = "grass", Color = "#DEFDE0" },
+                new BackgroundPokemon() { NombreColor = "electric", Color = "#FCF7DE" },
+                new BackgroundPokemon() { NombreColor = "water", Color = "#DEF3FD" },
+                new BackgroundPokemon() { NombreColor = "ground", Color = "#f4e7da" },
+                new BackgroundPokemon() { NombreColor = "rock", Color = "#d5d5d4" },
+                new BackgroundPokemon() { NombreColor = "fairy", Color = "#fceaff" },
+                new BackgroundPokemon() { NombreColor = "poison", Color = "#98d7a5" },
+                new BackgroundPokemon() { NombreColor = "bug", Color = "#f8d5a3" },
+                new BackgroundPokemon() { NombreColor = "dragon", Color = "#97b3e6" },
+                new BackgroundPokemon() { NombreColor = "psychic", Color = "#eaeda1" },
+                new BackgroundPokemon() { NombreColor = "flying", Color = "#F5F5F5" },
+                new BackgroundPokemon() { NombreColor = "fighting", Color = "#E6E0D4" },
+                new BackgroundPokemon() { NombreColor = "normal", Color = "#F5F5F5" }
+            };
 
             var findColor = (from l in myColor
                              where l.NombreColor==_nombreColor
                              select l.Color).FirstOrDefault();
 
             return findColor;
+        }
+        public string ColorRGB(string _nombreColor)
+        {
+            List<BackgroundPokemon> myColor = new List<BackgroundPokemon>
+            {
+                new BackgroundPokemon() { NombreColor = "fire", Color = "253, 223, 223" },
+                new BackgroundPokemon() { NombreColor = "grass", Color = "222, 253, 224" },
+                new BackgroundPokemon() { NombreColor = "electric", Color = "252, 247, 222" },
+                new BackgroundPokemon() { NombreColor = "water", Color = "222, 243, 253" },
+                new BackgroundPokemon() { NombreColor = "ground", Color = "244, 231, 218" },
+                new BackgroundPokemon() { NombreColor = "rock", Color = "213, 213, 212" },
+                new BackgroundPokemon() { NombreColor = "fairy", Color = "252, 234, 255" },
+                new BackgroundPokemon() { NombreColor = "poison", Color = "152, 215, 165" },
+                new BackgroundPokemon() { NombreColor = "bug", Color = "248, 213, 163" },
+                new BackgroundPokemon() { NombreColor = "dragon", Color = "151, 179, 230" },
+                new BackgroundPokemon() { NombreColor = "psychic", Color = "234, 237, 161" },
+                new BackgroundPokemon() { NombreColor = "flying", Color = "245, 245, 245" },
+                new BackgroundPokemon() { NombreColor = "fighting", Color = "230, 224, 212" },
+                new BackgroundPokemon() { NombreColor = "normal", Color = "245, 245, 245" }
+            };
+
+            var findColor = (from l in myColor
+                             where l.NombreColor == _nombreColor
+                             select l.Color).FirstOrDefault();
+
+            return findColor;
+        }
+
+        public Colores ObtenerColores(List<TypeElement> Types)
+        {
+            Colores color = new Colores();
+            string color1;
+            string color2;
+
+            if (Types.Count == 1)
+            {
+                color1 = ColorRGB(Types[0].Type.Name);
+                color2 = ColorRGB("normal");
+                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(" + color1 + ") 0%, rgba(" + color2 + ") 100%)";             
+            }
+            else if(Types.Count == 2)
+            {
+                color1 = ColorRGB(Types[0].Type.Name);
+                color2 = ColorRGB(Types[1].Type.Name);
+                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(" + color1 + ") 0%, rgba(" + color2 + ") 100%)";
+            }
+            else
+            {
+                color.ColorDegradado = "linear-gradient(312deg, rgba(2,0,36,1) 0%, rgba(130,130,130,1) 0%, rgba(255,255,255,1) 100%)";
+            }
+            color.ColorDefault = ColorHexadecimal(Types[0].Type.Name); 
+
+            return color;
         }
     }
 
@@ -592,9 +647,15 @@ namespace Apis.Areas.Api_Pokemon.Data
         public string Nombre { get; set; }
         public Uri Imagen { get; set; }
         public string ColorCards { get; set; }
-        public string ColorCardsDegradado { get; set; }
+        public Colores Colores { get; set; }
         public List<HabilidadesPokemon> HabilidadesPokemon { get; set; }
         public EstadisticaPokemon EstadisticaPokemon { get; set; }
+    }
+
+    public class Colores
+    {
+        public string ColorDefault { get; set; }
+        public string ColorDegradado { get; set; }
     }
     public class EstadisticaPokemon
     {
