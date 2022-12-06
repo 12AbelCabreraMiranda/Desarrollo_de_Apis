@@ -1,3 +1,5 @@
+using Apis.Repository;
+using Apis.Repository.IRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,13 @@ namespace Apis
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            
+            //Http
+            services.AddHttpClient();
+
+            //ID de respository
+            services.AddScoped<IPokemonRepository, PokemonRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +52,11 @@ namespace Apis
             app.UseStaticFiles();
 
             app.UseRouting();
+            //Habilitamos cors
+            app.UseCors(x =>
+                x.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseAuthorization();
 
