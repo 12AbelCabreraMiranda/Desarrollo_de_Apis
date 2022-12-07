@@ -13,26 +13,9 @@ namespace Apis.Areas.Api_Pokemon.Data
     public class ApiData
     {
         public async Task<List<Pokemon>> MiApi(int hasta)
-        {
-            List<Pokemon> lstPokemons = new List<Pokemon>();            
-
-            var lstTask = new List<Task>
-            {
-                Task.Run(async () =>{ return lstPokemons = await ObtenerRangoDePokemon(hasta-19, hasta); }),                
-            };
-
-            Task oTask = Task.WhenAll(lstTask);
-
-            try
-            {
-                oTask.Wait();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-           
+        {            
+            List<Pokemon> lstPokemons = await ObtenerRangoDePokemon(hasta-19, hasta);                 
+                                   
             return lstPokemons;
         }
 
@@ -64,6 +47,7 @@ namespace Apis.Areas.Api_Pokemon.Data
 
             return lstPokemons;
         }
+
 
         public async Task<Pokemon> ObtenerUnPokemon(int id)
         {
@@ -141,6 +125,7 @@ namespace Apis.Areas.Api_Pokemon.Data
             return lista;
         }
 
+        
         public Colores ObtenerColores(List<TypeElement> Types)
         {
             Colores color = new Colores();

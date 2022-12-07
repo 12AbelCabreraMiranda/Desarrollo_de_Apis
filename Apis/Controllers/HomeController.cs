@@ -18,16 +18,16 @@ namespace Apis.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var resultado = await _pokemonRepository.GetAllAsync(Helper.RutaPokemon);           
+            var resultado = await _pokemonRepository.ObtenerTodoAsync(Helper.RutaPokemon);           
 
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CrearPokemon(PokemonFavorito pokemonFavorito)
+        public async Task<IActionResult> CrearPokemon(PokemonFavorito modelPokemon)
         {
-            var resultado = await _pokemonRepository.CrearAsync(Helper.RutaPokemon, pokemonFavorito);
+            var resultado = await _pokemonRepository.CrearAsync(Helper.RutaPokemon, modelPokemon);
 
             return View();
         }
@@ -41,7 +41,7 @@ namespace Apis.Controllers
             {
                 return NotFound();
             }
-            pokemonFavorito = await _pokemonRepository.GetAsync(Helper.RutaPokemon, PokemonId.GetValueOrDefault());
+            pokemonFavorito = await _pokemonRepository.ObtenerAsync(Helper.RutaPokemon, PokemonId.GetValueOrDefault());
 
             if (pokemonFavorito == null)
             {
@@ -53,9 +53,9 @@ namespace Apis.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditarPokemon(PokemonFavorito pokemonFavorito)
+        public async Task<IActionResult> EditarPokemon(PokemonFavorito modelPokemon)
         {
-            var resultado = await _pokemonRepository.ActualizarAsync(Helper.RutaPokemon+pokemonFavorito.PokemonId, pokemonFavorito);
+            var resultado = await _pokemonRepository.ActualizarAsync(Helper.RutaPokemon+ modelPokemon.PokemonId, modelPokemon);
 
             return View();
         }
