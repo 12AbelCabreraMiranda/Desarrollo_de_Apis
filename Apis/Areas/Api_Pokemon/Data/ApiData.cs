@@ -22,28 +22,36 @@ namespace Apis.Areas.Api_Pokemon.Data
         public async Task<List<Pokemon>> ObtenerRangoDePokemon(int desde, int hasta)
         {
             List<Pokemon> lstPokemons = new List<Pokemon>();
-
-            for (int i = desde; i <= hasta; i++)
+            try
             {
-                var url = "https://pokeapi.co/api/v2/pokemon/" + (i);
-                var httpClient = new HttpClient();
-
-                var response =await httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
+                for (int i = desde; i <= hasta; i++)
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var objApi = JsonConvert.DeserializeObject<Principal>(content);
+                    var url = "https://pokeapi.co/api/v2/pokemon/" + (i);
+                    var httpClient = new HttpClient();
 
-                    Pokemon obj = new Pokemon
+                    var response = await httpClient.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
                     {
-                        Id = objApi.Id,
-                        Nombre = objApi.Name,
-                        Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
-                        ColorCards = ColorHexadecimal(objApi.Types[0].Type.Name)
-                    };
-                    lstPokemons.Add(obj);
+                        var content = await response.Content.ReadAsStringAsync();
+                        var objApi = JsonConvert.DeserializeObject<Principal>(content);
+
+                        Pokemon obj = new Pokemon
+                        {
+                            Id = objApi.Id,
+                            Nombre = objApi.Name,
+                            Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
+                            ColorCards = ColorHexadecimal(objApi.Types[0].Type.Name)
+                        };
+                        lstPokemons.Add(obj);
+                    }
                 }
             }
+            catch (Exception e )
+            {
+
+                throw;
+            }
+            
 
             return lstPokemons;
         }

@@ -8,6 +8,7 @@ namespace Apis.Models
 {
     public class PokemonFavorito
     {
+
         [JsonProperty("pokemonId")]
         public long PokemonId { get; set; }
 

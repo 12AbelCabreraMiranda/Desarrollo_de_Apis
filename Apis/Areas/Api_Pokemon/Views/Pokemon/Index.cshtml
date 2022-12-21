@@ -14,7 +14,7 @@
             <div class="col-md-3 mt-4">
                 <div class="card shadow-sm">
                     <div class="card-body tamanio-card pointer d-flex align-items-center justify-content-center" style="background-color:@item.ColorCards">
-                        <a class="nav-link" asp-area="Api_Pokemon" asp-controller="Pokemon" asp-action="MiPokemon" asp-route-id="@item.Id">
+                        <a class="nav-link" asp-area="Api_Pokemon" asp-controller="Pokemon" asp-action="Pokemon" asp-route-id="@item.Id">
                             <img src="@item.Imagen" class="card-img-top img-fluid tamaio-img" alt="...">
                         </a>
 
@@ -22,7 +22,7 @@
                     <div class="card-footer bg-white">
                         @*<h5 class="card-title mb-0">@item.Id</h5>*@
                         <h5 class="card-title mb-0 d-inline-block mt-1" style="text-transform: capitalize;">@item.Nombre</h5>
-                        <h3 class="d-inline-block float-right pointer @item.Id" onmouseover="mouseOver(@item.Id,'@item.ColorCards')" onmouseout="mouseOut(@item.Id)">
+                        <h3 class="d-inline-block float-right pointer @item.Id" onclick="AgregarAFavorito(@item.Id)" onmouseover="mouseOver(@item.Id,'@item.ColorCards')" onmouseout="mouseOut(@item.Id)">
                             <i class="bi bi-heart"></i>
                         </h3>
                     </div>
@@ -86,5 +86,30 @@
         function mouseOut(id) {
             $("." + id).css("color", "#1f1f1f");
         }
+
+        function AgregarAFavorito(PokemonId) {
+             
+            let data = new FormData();
+            data.append('Id', PokemonId);
+
+            fetch("@Url.Content("~/Pokemon/AgregarAFavorito")", {
+                method: 'POST',
+                body:data
+            }).then(function (result) {
+                if (result.ok) {
+                    return result.json();
+                }
+            }).then(function (data) {
+                if (data == 1) {
+                    alert("registrado en mis favoritos");
+                    location.reload(true);
+                } else {
+                    alert("error");
+                }
+            })
+        }
+
+
+
     </script>
 }

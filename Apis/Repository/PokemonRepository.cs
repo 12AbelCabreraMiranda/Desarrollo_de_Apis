@@ -81,7 +81,7 @@ namespace Apis.Repository
             HttpResponseMessage respuesta = await cliente.SendAsync(peticion);
 
             //return
-            if (respuesta.StatusCode == System.Net.HttpStatusCode.NoContent)
+            if (respuesta.StatusCode == System.Net.HttpStatusCode.Created)
             {
                 return true;
             }

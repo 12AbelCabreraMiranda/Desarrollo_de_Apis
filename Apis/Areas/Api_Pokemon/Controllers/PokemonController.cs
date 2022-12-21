@@ -1,5 +1,8 @@
 ﻿using Apis.Areas.Api_Pokemon.Data;
 using Apis.Areas.Api_Pokemon.ViewModels;
+using Apis.Models;
+using Apis.Repository.IRepository;
+using Apis.Utilidades;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +14,12 @@ namespace Apis.Areas.Api_Pokemon.Controllers
     [Area("Api_Pokemon")]
     public class PokemonController : Controller
     {
+        private readonly IPokemonRepository _pokemonRepository;
+
+        public PokemonController(IPokemonRepository pokemonRepository)
+        {
+            _pokemonRepository = pokemonRepository;
+        }
         public async Task<IActionResult> Index(int Pagina = 1)
         {
             var cantidadRegistrosPorPagina = 20;
@@ -36,12 +45,32 @@ namespace Apis.Areas.Api_Pokemon.Controllers
             return View(lstModels);
         }
         
-        public async Task<IActionResult> MiPokemon(int id)
+        public async Task<IActionResult> Pokemon(int Id)
         {
             ApiData api = new ApiData();
-            var miPokemon = await api.ObtenerUnPokemon(id);
+            var miPokemon = await api.ObtenerUnPokemon(Id);
 
             return View(miPokemon);
         }
+
+        [HttpPost]        
+        public async Task<int> AgregarAFavorito(int Id)
+        {
+            int Resultado=0;
+            PokemonFavorito modelPokemon = new PokemonFavorito
+            {               
+                PokemonId =Id,      
+                Estado = 1,    
+                UsuarioCrea = "Abel",
+                FechaCreacion = DateTime.Now
+            };
+
+            var respuesta = await _pokemonRepository.CrearAsync(Helper.RutaPokemon, modelPokemon);
+            Resultado= respuesta==true?1 : 0;
+
+            return Resultado;
+        }
+           
+
     }
 }
