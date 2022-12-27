@@ -7,7 +7,7 @@ namespace Apis.Utilidades
 {
     public static class Helper
     {
-        public static string UrlBaseApi = "http://localhost:2932/";
+        public static string UrlBaseApi = "http://localhost:58179/";
         public static string RutaPokemon = UrlBaseApi+"api/Pokemon/";
     }
 }
