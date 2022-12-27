@@ -24,7 +24,7 @@ namespace Apis.Areas.Api_Pokemon.Controllers
         {
             var cantidadRegistrosPorPagina = 20;
 
-            ApiData api = new ApiData();
+            ApiData api = new ApiData(_pokemonRepository);
             var datosPokemons =await api.MiApi(Pagina*20);
 
             var pokemons = datosPokemons.OrderBy(x => x.Id)
@@ -47,7 +47,7 @@ namespace Apis.Areas.Api_Pokemon.Controllers
         
         public async Task<IActionResult> Pokemon(int Id)
         {
-            ApiData api = new ApiData();
+            ApiData api = new ApiData(_pokemonRepository);
             var miPokemon = await api.ObtenerUnPokemon(Id);
 
             return View(miPokemon);
@@ -56,7 +56,7 @@ namespace Apis.Areas.Api_Pokemon.Controllers
         [HttpPost]        
         public async Task<int> AgregarAFavorito(int Id)
         {
-            int Resultado=0;
+            
             PokemonFavorito modelPokemon = new PokemonFavorito
             {               
                 PokemonId =Id,      
@@ -66,11 +66,20 @@ namespace Apis.Areas.Api_Pokemon.Controllers
             };
 
             var respuesta = await _pokemonRepository.CrearAsync(Helper.RutaPokemon, modelPokemon);
-            Resultado= respuesta==true?1 : 0;
+            int Resultado= respuesta == true ? 1 : 0;
 
             return Resultado;
         }
-           
+
+        [HttpPost]
+        public async Task<int> DeletePokemon(int Id)
+        {
+            var respuesta = await _pokemonRepository.EliminarAsync(Helper.RutaPokemon, Id);
+            int Resultado = respuesta == true ? 1 : 0;
+
+            return Resultado;
+        }
+
 
     }
 }

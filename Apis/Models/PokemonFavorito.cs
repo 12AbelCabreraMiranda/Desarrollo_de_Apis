@@ -22,7 +22,7 @@ namespace Apis.Models
         public string Color { get; set; }
 
         [JsonProperty("estado")]
-        public long Estado { get; set; }
+        public int Estado { get; set; }
 
         [JsonProperty("usuarioCrea")]
         public string UsuarioCrea { get; set; }

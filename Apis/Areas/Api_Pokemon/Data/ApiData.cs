@@ -1,4 +1,8 @@
 ﻿
+using Apis.Models;
+using Apis.Repository.IRepository;
+using Apis.Utilidades;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,6 +16,12 @@ namespace Apis.Areas.Api_Pokemon.Data
 {
     public class ApiData
     {
+        private readonly IPokemonRepository _pokemonRepository;
+
+        public ApiData(IPokemonRepository pokemonRepository)
+        {
+            _pokemonRepository = pokemonRepository;
+        }
         public async Task<List<Pokemon>> MiApi(int hasta)
         {            
             List<Pokemon> lstPokemons = await ObtenerRangoDePokemon(hasta-19, hasta);                 
@@ -40,7 +50,9 @@ namespace Apis.Areas.Api_Pokemon.Data
                             Id = objApi.Id,
                             Nombre = objApi.Name,
                             Imagen = objApi.Sprites.Other.DreamWorld.FrontDefault,
-                            ColorCards = ColorHexadecimal(objApi.Types[0].Type.Name)
+                            ColorCards = ColorHexadecimal(objApi.Types[0].Type.Name),
+                            Colores = ObtenerColores(objApi.Types),
+                            MiPokemonFavorito = await GetPokemonFavorito(objApi.Id)
                         };
                         lstPokemons.Add(obj);
                     }
@@ -89,7 +101,8 @@ namespace Apis.Areas.Api_Pokemon.Data
                         AtaqueEspecial=objApi.Stats[3].BaseStat,
                         DefensaEspecial=objApi.Stats[4].BaseStat,
                         Velocidad=objApi.Stats[5].BaseStat
-                    }
+                    },
+                    MiPokemonFavorito=await GetPokemonFavorito(objApi.Id)
                 };
              
             }
@@ -214,8 +227,21 @@ namespace Apis.Areas.Api_Pokemon.Data
 
             return findColor;
         }
-       
-        
+
+        [HttpGet]
+        public async Task<int> GetPokemonFavorito(long PokemonId)
+        {            
+            int resultado = 0;
+
+            PokemonFavorito pokemonFavorito = await _pokemonRepository.ObtenerAsync(Helper.RutaPokemon, Convert.ToInt32(PokemonId));
+
+            if (pokemonFavorito != null)
+            {
+                 resultado=1;
+            }
+
+            return resultado;
+        }
     }
 
     public class Info
@@ -645,6 +671,7 @@ namespace Apis.Areas.Api_Pokemon.Data
         public Colores Colores { get; set; }
         public List<HabilidadesPokemon> HabilidadesPokemon { get; set; }
         public EstadisticaPokemon EstadisticaPokemon { get; set; }
+        public int MiPokemonFavorito { get; set; }
     }
 
     public class Colores
